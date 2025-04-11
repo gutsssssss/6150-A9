@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Details</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Book Details</h1>
+    <div id="book-detail"></div>
+    <a href="index.html">&larr; Back to List</a>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    fetch(`https://67eda8114387d9117bbe47cb.mockapi.io/book/${id}`)
+      .then(res => res.json())
+      .then(book => {
+        document.getElementById("book-detail").innerHTML = `
+          <h2>${book.title}</h2>
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p><strong>Editorial:</strong> ${book.editorial}</p>
+          <p><strong>Edition:</strong> ${book.edition}</p>
+          <p><strong>Pages:</strong> ${book.pages}</p>
+          <p><strong>Topics:</strong> ${book.topics}</p>
+        `;
+      });
+  </script>
+</body>
+</html>

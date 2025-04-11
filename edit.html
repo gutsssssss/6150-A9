@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Book</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Edit Book</h1>
+    <form id="edit-form">
+      <label>Title: <input type="text" id="title" required></label><br>
+      <label>Author: <input type="text" id="author" required></label><br>
+      <label>Editorial: <input type="text" id="editorial" required></label><br>
+      <label>Edition: <input type="text" id="edition" required></label><br>
+      <label>Pages: <input type="number" id="pages" required min="1"></label><br>
+      <label>Topics: <input type="text" id="topics" required></label><br>
+      <button type="submit">Save Changes</button>
+    </form>
+    <a href="index.html">&larr; Back to List</a>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    // Fetch the existing book data to populate the form
+    fetch(`https://67eda8114387d9117bbe47cb.mockapi.io/book/${id}`)
+      .then(res => res.json())
+      .then(book => {
+        document.getElementById("title").value = book.title;
+        document.getElementById("author").value = book.author;
+        document.getElementById("editorial").value = book.editorial;
+        document.getElementById("edition").value = book.edition;
+        document.getElementById("pages").value = book.pages;
+        document.getElementById("topics").value = book.topics;
+      });
+    // Handle form submission to save changes
+    document.getElementById("edit-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const updatedBook = {
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        editorial: document.getElementById("editorial").value,
+        edition: document.getElementById("edition").value,
+        pages: document.getElementById("pages").value,
+        topics: document.getElementById("topics").value
+      };
+      fetch(`https://67eda8114387d9117bbe47cb.mockapi.io/book/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedBook)
+      })
+      .then(res => res.json())
+      .then(() => {
+        alert("Book updated successfully!");
+        window.location.href = "index.html";
+      });
+    });
+  </script>
+</body>
+</html>
