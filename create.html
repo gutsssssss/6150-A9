@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Book</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Create a New Book</h1>
+    <form id="book-form">
+      <label>Title: <input type="text" id="title" required></label><br>
+      <label>Author: <input type="text" id="author" required></label><br>
+      <label>Editorial: <input type="text" id="editorial" required></label><br>
+      <label>Edition: <input type="text" id="edition" required></label><br>
+      <label>Pages: <input type="number" id="pages" required min="1"></label><br>
+      <label>Topics: <input type="text" id="topics" required></label><br>
+      <button type="submit">Submit</button>
+    </form>
+    <a href="index.html">&larr; Back to List</a>
+  </main>
+  <script>
+    document.getElementById("book-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const newBook = {
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        editorial: document.getElementById("editorial").value,
+        edition: document.getElementById("edition").value,
+        pages: document.getElementById("pages").value,
+        topics: document.getElementById("topics").value
+      };
+      fetch("https://67eda8114387d9117bbe47cb.mockapi.io/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newBook)
+      })
+      .then(res => res.json())
+      .then(() => {
+        alert("Book created successfully!");
+        window.location.href = "index.html";
+      });
+    });
+  </script>
+</body>
+</html>
